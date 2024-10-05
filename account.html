@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>Document</title>
+</head>
+<body style=" background: radial-gradient(#fff, #ffd6d6);">
+    <nav>
+        <ul id="MenuItems">
+            {% if current_user.is_authenticated %}
+            
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+             <li><a href="{{ url_for('products') }}">Products</a></li>
+             
+             <li><a href="{{ url_for('account') }}">Account</a></li>
+             <li><a href="{{ url_for('logout') }}">log out</a></li>
+             <b>welcome {{ current_user.name }}</b>
+            <br>
+            <p>Your Balance: ${{ current_user.balance }}</p>
+
+           
+            
+            
+            {% else %}
+            <li><a href="{{ url_for('index') }}">home</a></li>
+             <li><a href="{{ url_for('products') }}">Products</a></li>
+             
+             <li><a href="{{ url_for('register') }}">regi</a></li>
+             <li><a href="{{ url_for('login') }}">loi</a></li>
+
+            
+            {% endif %}
+
+            
+            
+
+        </ul>
+    </nav>
+    
+
+    <div class="container">
+        <h1>Your Account</h1>
+        <div class="account-details">
+            <p><strong>Name:</strong> {{ user.name }}</p>
+            <p><strong>Balance:</strong> ${{ user.balance }}</p>
+
+            <h3>Your Products:</h3>
+            {% if user.pro %}
+                <ul>
+                    {% for product in user.pro %}
+                        <li>{{ product.prodname }} - ${{ product.price }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>You have not purchased any products yet.</p>
+            {% endif %}
+        </div>
+        <a href="{{ url_for('products') }}" class="btn btn-secondary">Back to Products</a>
+    </div>
+
+
+</body>
+</html>

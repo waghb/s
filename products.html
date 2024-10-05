@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <title>All Products - Redstore</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!--added a cdn link by searching font awesome4 cdn and getting this link from https://www.bootstrapcdn.com/fontawesome/ this url*/-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body style=" background: radial-gradient(#fff, #ffd6d6);">
+    <!--<div class ="header">-->
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html"><img src="static/images/logo.png" width="125px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    {% if current_user.is_authenticated %}
+                    
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                     <li><a href="{{ url_for('products') }}">Products</a></li>
+                     
+                     <li><a href="{{ url_for('account') }}">Account</a></li>
+                     <li><a href="{{ url_for('logout') }}">log out</a></li>
+                     <b>welcome {{ current_user.name }}</b>
+                    <br>
+                    <p>Your Balance: ${{ current_user.balance }}</p>
+
+                   
+                    
+                    
+                    {% else %}
+                    <li><a href="{{ url_for('index') }}">home</a></li>
+                     <li><a href="{{ url_for('products') }}">Products</a></li>
+                     
+                     <li><a href="{{ url_for('register') }}">regi</a></li>
+                     <li><a href="{{ url_for('login') }}">loi</a></li>
+
+                    
+                    {% endif %}
+                    
+
+                </ul>
+            </nav>
+           
+            <img src="static/images/menu.png" class="menu-icon" onClick="menutoggle()" >
+        </div>
+    
+    <!--</div>-->
+
+
+    <!------------------------------ Products------------------------------>
+    <div class="small-container">
+        <div class="row row-2">
+            <h2>All Products</h2>
+            <select>
+                <option>Default sorting</option>
+                <option>Short by price</option>
+                <option>Short by popularity</option>
+                <option>Short by rating</option>
+                <option>Short by sale</option>
+            </select>
+        </div>
+
+
+        <!--<h2 class="title" >Featured Products</h2>-->
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div style="border: 1px solid #ccc; padding: 10px;">
+                    <h2>{{ product.prodname }} - ${{ product.price }}</h2>
+                    <p>Brand: {{ product.brand }}</p>
+                    <img src="{{ product.image_url }}" alt="{{ product.prodname }}" class="img-fluid">
+                    <a href="{{ url_for('detail', product_id=product.id) }}" class="btn btn-info mt-2">View Details</a>
+        
+                    <form action="{{ url_for('purchase', product_id=product.id) }}" method="POST" class="mt-2">
+                        <button type="submit" class="btn btn-primary">Buy Now</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+
+
+        
+
+    </div>
+
+
+    
+
+
+    <!-----------------------------------js for toggle menu----------------------------------------------->
+    <script>
+        var menuItems = document.getElementById("MenuItems");
+
+        MenuItems.style.maxHeight = "0px";
+        function menutoggle() {
+            if (MenuItems.style.maxHeight == "0px") {
+                MenuItems.style.maxHeight = "200px";
+            }
+            else {
+                MenuItems.style.maxHeight = "0px";
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body style=" background: radial-gradient(#fff, #ffd6d6);">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div>
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="navbar">
+    <div class="logo">
+        <a href="index.html"><img src="static/images/logo.png" width="125px"></a>
+    </div>
+    <nav>
+        <ul id="MenuItems">
+            {% if current_user.is_authenticated %}
+            
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+             <li><a href="{{ url_for('products') }}">Products</a></li>
+             
+             <li><a href="{{ url_for('account') }}">Account</a></li>
+             <li><a href="{{ url_for('logout') }}">log out</a></li>
+             <b>welcome {{ current_user.name }}</b>
+            <br>
+            <p>Your Balance: ${{ current_user.balance }}</p>
+
+           
+            
+            
+            {% else %}
+            <li><a href="{{ url_for('index') }}">home</a></li>
+             <li><a href="{{ url_for('products') }}">Products</a></li>
+             
+             <li><a href="{{ url_for('register') }}">regi</a></li>
+             <li><a href="{{ url_for('login') }}">loi</a></li>
+
+            
+            {% endif %}
+            
+
+        </ul>
+    </nav>
+   
+    <img src="static/images/menu.png" class="menu-icon" onClick="menutoggle()" >
+</div>
+
+    <div class="container">
+        <h1>{{ product.prodname }}</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Brand: {{ product.brand }}</h3>
+                <h4>Price: ${{ product.price }}</h4>
+                <img src="{{ product.image_url }}" alt="{{ product.prodname }}" class="img-fluid">
+                
+                <form action="{{ url_for('purchase', product_id=product.id) }}" method="POST">
+                    <button type="submit" class="btn btn-primary">Purchase</button>
+                </form>
+                
+                <a href="{{ url_for('products') }}" class="btn btn-secondary mt-3">Back to Products</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
